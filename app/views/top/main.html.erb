@@ -1,0 +1,77 @@
+<h1>つぶやきアプリ</h1>
+
+<% if notice %>
+  <p><%= notice %></p>
+<% end %>
+
+<% if alert %>
+  <p><%= alert %></p>
+<% end %>
+
+<% if current_user %>
+  <p>
+    ログイン中：
+    <%= current_user.uid %>
+  </p>
+
+  <%= button_to "ログアウト", logout_path, method: :delete %>
+
+  <h2>ツイートする</h2>
+
+  <%= form_with model: @tweet do |form| %>
+    <%= form.text_field :message %>
+    <%= form.submit "投稿" %>
+  <% end %>
+<% else %>
+  <h2>ログイン</h2>
+
+  <%= form_with url: login_path do |form| %>
+    <div>
+      <%= form.label :uid, "ユーザーID" %>
+      <%= form.text_field :uid %>
+    </div>
+
+    <div>
+      <%= form.label :password, "パスワード" %>
+      <%= form.password_field :password %>
+    </div>
+
+    <%= form.submit "ログイン" %>
+  <% end %>
+
+  <%= link_to "ユーザー登録", new_user_path %>
+<% end %>
+
+<% if current_user %>
+  <h2>ツイート一覧</h2>
+
+  <% @tweets.each do |tweet| %>
+    <div>
+      <strong><%= tweet.user.uid %></strong>
+      <%= tweet.message %>
+
+      <p>
+        いいね数：
+        <%= tweet.likes.count %>
+      </p>
+
+      <% if current_user %>
+        <% like = current_user.likes.find_by(tweet_id: tweet.id) %>
+
+        <% if like %>
+          <%= button_to "いいね削除",
+                        like_path(like),
+                        method: :delete %>
+        <% else %>
+          <%= button_to "いいね",
+                        likes_path(tweet_id: tweet.id),
+                        method: :post %>
+        <% end %>
+      <% end %>
+    </div>
+
+  <hr>
+  <% end %>
+<% else %>
+    <p>ツイートを見るにはログインしてください。</p>
+<% end %>
