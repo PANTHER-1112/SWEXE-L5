@@ -14,6 +14,20 @@
     <%= current_user.uid %>
   </p>
 
+<% if current_user %>
+  <h2>自分のプロフィール</2>
+
+  <% if current_user.profile %>
+    <%= simple_format(current_user.profile.message) %>
+  <% else %>
+    <p>プロフィールはまだ登録されていません</p>
+  <% end %>
+
+  <p>
+    <%= link_to "プロフィール登録・編集" , edit_profile_path %>
+  </p>
+<% end %>
+
   <%= button_to "ログアウト", logout_path, method: :delete %>
 
   <h2>ツイートする</h2>
@@ -48,6 +62,10 @@
   <% @tweets.each do |tweet| %>
     <div>
       <strong><%= tweet.user.uid %></strong>
+
+      <% if tweet.user.profile %>
+        <p>自己紹介： <%= tweet.user.profile.message %></p>
+      <% end %>
       <%= tweet.message %>
 
       <p>
