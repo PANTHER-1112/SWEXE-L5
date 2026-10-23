@@ -3,9 +3,13 @@ en:
     attributes:
       user:
         uid: "ユーザーID"
+        password: "パスワード"
+        password_confirmation: "確認用パスワード"
     errors:
       models:
         user:
           attributes:
             uid:
               taken: "はすでに使用されています"
+            password_confirmation:
+              confirmation: "がパスワードと一致しません"

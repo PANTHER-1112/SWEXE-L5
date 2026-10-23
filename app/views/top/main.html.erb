@@ -74,9 +74,9 @@
       </p>
 
       <% if current_user %>
-        <% like = current_user.likes.find_by(tweet_id: tweet.id) %>
+        <% if tweet.liked?(current_user) %>
+          <% like = current_user.likes.find_by!(tweet_id: tweet.id) %>
 
-        <% if like %>
           <%= button_to "いいね削除",
                         like_path(like),
                         method: :delete %>

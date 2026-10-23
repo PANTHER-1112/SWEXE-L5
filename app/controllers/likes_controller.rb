@@ -2,13 +2,20 @@ class LikesController < ApplicationController
   before_action :require_login
 
   def create
-    current_user.likes.find_or_create_by(tweet_id: params[:tweet_id])
+    tweet = Tweet.find(params[:twwet_id])
+
+    unless tweet.liked?(current_user)
+        tweet.like(current_user)
+    end
+
     redirect_to root_path
   end
 
   def destroy
     like = current_user.likes.find(params[:id])
-    like.destroy
+    tweet = like.tweet
+    
+    tweet.unlike(current_user)
 
     redirect_to root_path
   end
