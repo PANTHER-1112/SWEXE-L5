@@ -15,7 +15,7 @@
   </p>
 
 <% if current_user %>
-  <h2>自分のプロフィール</2>
+  <h2>自分のプロフィール</h2>
 
   <% if current_user.profile %>
     <%= simple_format(current_user.profile.message) %>
@@ -60,6 +60,14 @@
   <h2>ツイート一覧</h2>
 
   <% @tweets.each do |tweet| %>
+      <% if current_user && tweet.user_id == current_user.id %>
+        <%= button_to "ツイート削除",
+                  tweet_path(tweet),
+                  method: :delete,
+                  data: {
+                    turbo_confirm: "このツイートを削除しますか？"
+                  } %>
+      <% end %>
     <div>
       <strong><%= tweet.user.uid %></strong>
 

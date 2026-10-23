@@ -15,7 +15,7 @@ class TweetsController < ApplicationController
     tweet = current_user.tweets.find(params[:id])
     tweet.destroy
 
-    redirect_to root_path, notice: "削除しました"
+    redirect_to root_path, notice: "削除しました", status: :see_other
   end
 
   private
